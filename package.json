@@ -1,0 +1,15 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "a battleship game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Connor Ketcheson",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.83.1",
+    "webpack-cli": "^5.1.1"
+  }
+}
