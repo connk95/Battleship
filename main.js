@@ -1,0 +1,1 @@
+(()=>{const s=new class{constructor(s,t,i){this.name=s,this.size=t,this.location=i,this.sunk=!1}hit(s){const t=this.location.indexOf(s);t>-1&&this.location.splice(t,1),this.isSunk()}isSunk(){0==this.location.length?(this.sunk=!0,console.log(`You sunk my ${this.name}!`)):console.log("Hit!")}}("battleship",4,["a1","b1","c1","d1"]);console.log(s)})();
