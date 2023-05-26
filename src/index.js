@@ -1,30 +1,22 @@
-class Ship {
-  constructor(name, size, location) {
-    this.name = name;
-    this.size = size;
-    this.location = location;
-    this.sunk = false;
-  }
+import { Ship } from "./ship";
+import { Gameboard } from "./gameboard";
 
-  hit(tile) {
-    const index = this.location.indexOf(tile);
-    if (index > -1) {
-      this.location.splice(index, 1);
-    }
-    this.isSunk();
-  }
+const battleship = new Ship("battleship", 4);
 
-  isSunk() {
-    if (this.location.length == 0) {
-      this.sunk = true;
-      console.log(`You sunk my ${this.name}!`);
-    } else {
-      console.log("Hit!");
-    }
-    return;
-  }
-}
+const cruiser = new Ship("cruiser", 2);
 
-const battleship = new Ship("battleship", 4, ["a1", "b1", "c1", "d1"]);
+const board = new Gameboard(10);
+
+battleship.location = board.placeShip("battleship", 0, 0, "horizontal");
+
+cruiser.location = board.placeShip("cruiser", 5, 5, "vertical");
 
 console.log(battleship);
+
+console.log(cruiser);
+
+board.receiveAttack(5, 5);
+
+//board.placeShip("battleship", 0, 0, "horizontal");
+
+console.log(board);

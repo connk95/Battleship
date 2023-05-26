@@ -1,8 +1,8 @@
-class Ship {
-  constructor(name, size, location) {
+export class Ship {
+  constructor(name, size) {
     this.name = name;
     this.size = size;
-    this.location = location;
+    this.location = [];
     this.sunk = false;
   }
 
@@ -24,9 +24,3 @@ class Ship {
     return;
   }
 }
-
-const battleship = new Ship("battleship", 4, ["a1", "b1", "c1", "d1"]);
-
-console.log(battleship);
-
-export default Ship;
