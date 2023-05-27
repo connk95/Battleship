@@ -62,7 +62,6 @@ export class Gameboard {
         loc.push([x, y], [x + 1, y], [x + 2, y]);
       }
     }
-    this.ships.push(loc);
     return loc;
   }
 
@@ -70,11 +69,18 @@ export class Gameboard {
     let attack = [x, y];
     this.shots.push(attack);
     for (let i = 0; i < this.ships.length; i++) {
-      for (let j = 0; j < this.ships[i].length; j++) {
-        if (x == this.ships[i][j][0] && y == this.ships[i][j][1]) {
+      for (let j = 0; j < this.ships[i].location.length; j++) {
+        if (
+          x == this.ships[i].location[j][0] &&
+          y == this.ships[i].location[j][1]
+        ) {
           this.hits.push(attack);
+          this.ships[i].hit(attack);
+          return;
         }
       }
     }
+    console.log("Miss!");
+    return;
   }
 }
