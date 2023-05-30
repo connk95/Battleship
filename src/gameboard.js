@@ -29,36 +29,76 @@ export class Gameboard {
     //};
     if (ship == "battleship") {
       if (direction == "vertical") {
+        if (y > 6) {
+          alert("Please select a valid space!");
+          return;
+        }
         loc.push([x, y], [x, y + 1], [x, y + 2], [x, y + 3]);
       } else if (direction == "horizontal") {
+        if (x > 6) {
+          alert("Please select a valid space!");
+          return;
+        }
         loc.push([x, y], [x + 1, y], [x + 2, y], [x + 3, y]);
       }
     }
     if (ship == "carrier") {
       if (direction == "vertical") {
+        if (y > 5) {
+          alert("Please select a valid space!");
+          return;
+        }
         loc.push([x, y], [x, y + 1], [x, y + 2], [x, y + 3], [x, y + 4]);
       } else if (direction == "horizontal") {
+        if (x > 5) {
+          alert("Please select a valid space!");
+          return;
+        }
         loc.push([x, y], [x + 1, y], [x + 2, y], [x + 3, y], [x + 4, y]);
       }
     }
     if (ship == "cruiser") {
       if (direction == "vertical") {
+        if (y > 8) {
+          alert("Please select a valid space!");
+          return;
+        }
         loc.push([x, y], [x, y + 1]);
       } else if (direction == "horizontal") {
+        if (x > 8) {
+          alert("Please select a valid space!");
+          return;
+        }
         loc.push([x, y], [x + 1, y]);
       }
     }
     if (ship == "destroyer") {
       if (direction == "vertical") {
+        if (y > 7) {
+          alert("Please select a valid space!");
+          return;
+        }
         loc.push([x, y], [x, y + 1], [x, y + 2]);
       } else if (direction == "horizontal") {
+        if (x > 7) {
+          alert("Please select a valid space!");
+          return;
+        }
         loc.push([x, y], [x + 1, y], [x + 2, y]);
       }
     }
     if (ship == "submarine") {
       if (direction == "vertical") {
+        if (y > 7) {
+          alert("Please select a valid space!");
+          return;
+        }
         loc.push([x, y], [x, y + 1], [x, y + 2]);
       } else if (direction == "horizontal") {
+        if (y > 7) {
+          alert("Please select a valid space!");
+          return;
+        }
         loc.push([x, y], [x + 1, y], [x + 2, y]);
       }
     }
