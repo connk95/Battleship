@@ -16,7 +16,31 @@ export class Player {
     this.myShips.push(newShip);
   }
 
-  takeShot(x, y, player) {}
+  shoot(x, y, player) {
+    player.myBoard.receiveAttack(x, y);
+  }
 
-  receiveShot(x, y, player) {}
+  aiPlace(ship, size) {
+    let newShip = new Ship(ship, size);
+    let dir = Math.round(Math.random());
+    if (dir > 0) {
+      newShip.location = this.myBoard.placeShip(
+        ship,
+        Math.floor(Math.random() * (this.myBoard.size - size)),
+        Math.floor(Math.random() * this.myBoard.size),
+        "horizontal"
+      );
+    } else {
+      newShip.location = this.myBoard.placeShip(
+        ship,
+        Math.floor(Math.random() * this.myBoard.size),
+        Math.floor(Math.random() * (this.myBoard.size - size)),
+        "vertical"
+      );
+    }
+    this.myBoard.ships.push(newShip);
+    this.myShips.push(newShip);
+  }
+
+  aiShoot(x, y, player) {}
 }
