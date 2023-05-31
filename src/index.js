@@ -35,5 +35,8 @@ const ai1 = new Player(false, false);
 ai1.aiPlace("carrier", 5);
 console.log(ai1.myShips);
 console.log(ai1.myBoard);
+console.log(ai1.shots);
+console.log(ai1.myHits);
+console.log(ai1.shotSearch);
 
 ai1.aiShoot(player1);

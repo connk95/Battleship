@@ -19,6 +19,8 @@ export class Ship {
   isSunk() {
     if (this.hits.length == this.size) {
       this.sunk = true;
+      //pop this ship from the gameboard's array of ships, and add that ship to the opposite player's sunk ships
+      //reset the ai's hit array so that it will begin to fire randomly again
       console.log(`You sunk my ${this.name}!`);
     }
     return;

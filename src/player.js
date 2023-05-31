@@ -7,6 +7,7 @@ export class Player {
     this.turn = turn;
     this.myBoard = new Gameboard(10);
     this.myShips = [];
+    this.shots = [];
     this.myHits = [];
     this.shotSearch = [];
   }
@@ -19,6 +20,14 @@ export class Player {
   }
 
   shoot(x, y, player) {
+    let attack = [x, y];
+    for (let i = 0; i < this.shots.length; i++) {
+      if (x == this.shots[i][0] && y == this.shots[i][1]) {
+        alert("You cannot target the same spot twice!");
+        return;
+      }
+    }
+    this.shots.push(attack);
     const playerShot = player.myBoard.receiveAttack(x, y);
     if (playerShot != false) {
       this.myHits.push(playerShot);
@@ -51,7 +60,13 @@ export class Player {
     if (this.shotSearch.length != 0) {
       let x = this.shotSearch[0][0];
       let y = this.shotSearch[0][1];
+      for (let i = 0; i < this.shots.length; i++) {
+        if (x == this.shots[i][0] && y == this.shots[i][1]) {
+          return;
+        }
+      }
       let aiShot = player.myBoard.receiveAttack(x, y);
+      this.shots.push([x, y]);
       if (aiShot != false) {
         this.myHits.push(aiShot);
         this.shotSearch = [];
@@ -62,7 +77,13 @@ export class Player {
     } else {
       let x = Math.floor(Math.random() * player.myBoard.size);
       let y = Math.floor(Math.random() * player.myBoard.size);
+      for (let i = 0; i < this.shots.length; i++) {
+        if (x == this.shots[i][0] && y == this.shots[i][1]) {
+          return;
+        }
+      }
       let aiShot = player.myBoard.receiveAttack(x, y);
+      this.shots.push([x, y]);
       if (aiShot != false) {
         this.myHits.push(aiShot);
         this.aiDestroy();
@@ -72,21 +93,25 @@ export class Player {
 
   aiDestroy() {
     if (this.myHits.length == 1) {
-      const firstHit = this.myHits[0];
-      const firstX = firstHit[0];
-      const firstY = firstHit[1];
-
-      let searchUp = [firstX, firstY + 1];
-      let searchDown = [firstX, firstY - 1];
-      let searchLeft = [firstX - 1, firstY];
-      let searchRight = [firstX + 1, firstY];
-
-      this.shotSearch.push(searchUp, searchDown, searchLeft, searchRight);
+      const x = this.myHits[0][0];
+      const y = this.myHits[0][1];
+      if (y < 9) {
+        this.shotSearch.push([x, y + 1]);
+      }
+      if (y > 0) {
+        this.shotSearch.push([x, y - 1]);
+      }
+      if (x > 0) {
+        this.shotSearch.push([x - 1, y]);
+      }
+      if (x < 9) {
+        this.shotSearch.push([x + 1, y]);
+      }
     } else {
-      let x1 = this.myHits[0][0];
-      let y1 = this.myHits[0][1];
-      let x2 = this.myHits[1][0];
-      let y2 = this.myHits[1][1];
+      const x1 = this.myHits[0][0];
+      const y1 = this.myHits[0][1];
+      const x2 = this.myHits[this.myHits.length - 1][0];
+      const y2 = this.myHits[this.myHits.length - 1][1];
       if (x1 == x2) {
         this.shotSearch.push([x1, y1 - 1], [x2, y2 + 1]);
       } else if (y1 == y2) {
