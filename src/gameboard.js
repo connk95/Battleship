@@ -116,11 +116,11 @@ export class Gameboard {
         ) {
           this.hits.push(attack);
           this.ships[i].hit(attack);
-          return;
+          return [x, y];
         }
       }
     }
     console.log("Miss!");
-    return;
+    return false;
   }
 }
