@@ -13,6 +13,16 @@ export class Player {
   }
 
   place(ship, size, x, y, direction) {
+    for (let i = 0; i < this.myShips.length; i++) {
+      for (let j = 0; j < this.myShips[i].location.length; j++) {
+        let placedX = this.myShips[i].location[j][0];
+        let placedY = this.myShips[i].location[j][1];
+        if (placedX == x && placedY == y) {
+          alert("There is already a ship here!");
+          return;
+        }
+      }
+    }
     let newShip = new Ship(ship, size);
     newShip.location = this.myBoard.placeShip(ship, x, y, direction);
     this.myBoard.ships.push(newShip);
@@ -35,20 +45,36 @@ export class Player {
   }
 
   aiPlace(ship, size) {
+    let horizontalX = Math.floor(Math.random() * (this.myBoard.size - size));
+    let horizontalY = Math.floor(Math.random() * this.myBoard.size);
+    let verticalX = Math.floor(Math.random() * this.myBoard.size);
+    let verticalY = Math.floor(Math.random() * (this.myBoard.size - size));
+    for (let i = 0; i < this.myShips.length; i++) {
+      for (let j = 0; j < this.myShips[i].location.length; j++) {
+        let placedX = this.myShips[i].location[j][0];
+        let placedY = this.myShips[i].location[j][1];
+        if (
+          (placedX == verticalX && placedY == verticalY) ||
+          (placedX == horizontalX && placedY == horizontalY)
+        ) {
+          return;
+        }
+      }
+    }
     let newShip = new Ship(ship, size);
     let dir = Math.round(Math.random());
     if (dir > 0) {
       newShip.location = this.myBoard.placeShip(
         ship,
-        Math.floor(Math.random() * (this.myBoard.size - size)),
-        Math.floor(Math.random() * this.myBoard.size),
+        horizontalX,
+        horizontalY,
         "horizontal"
       );
     } else {
       newShip.location = this.myBoard.placeShip(
         ship,
-        Math.floor(Math.random() * this.myBoard.size),
-        Math.floor(Math.random() * (this.myBoard.size - size)),
+        verticalX,
+        verticalY,
         "vertical"
       );
     }
@@ -118,17 +144,5 @@ export class Player {
         this.shotSearch.push([x1 - 1, y1], [x2 + 1, y2]);
       }
     }
-    //the ai hits, for example, [5, 5]
-    //the ai will search for the next hit at either [5, 6], [5, 4], [4, 5], or [6, 5]
-    //ie. at [x, y+1], [x, y-1], [x-1, y], or [x+1, y]
-    //
-    //if the ai hits again at, for example, [5, 6], then we know the next hit will be at [5, 7], or at [5, 4]
-    //the ai will stop shooting once the shio is determined to be sunk (the myHits array becomes empty)
-    //
-    //if the ai misses its second shot, for example, at [4, 5], then it will return to searching as above
-    //
-    //if the aiHits array contains more than one value, we should follow the value that repeats
-    //for example, if we have hit [5, 5], and [5, 6], then the x value of 5 is repeating
-    //therefore the next shot should also use an x value of 5
   }
 }
