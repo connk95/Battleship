@@ -103,6 +103,18 @@ export class Gameboard {
         loc.push([x, y], [x + 1, y], [x + 2, y]);
       }
     }
+    for (let i = 0; i < this.ships.length; i++) {
+      for (let j = 0; j < this.ships[i].location.length; j++) {
+        let placedX = this.ships.location[j][0];
+        let placedY = this.ships.location[j][1];
+
+        for (let k = 0; k < loc.length; k++);
+        if (placedX == loc.length[k][0] && placedY == loc.length[k][1]) {
+          alert("There is already a ship here!");
+          return;
+        }
+      }
+    }
     return loc;
   }
 
