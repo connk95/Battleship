@@ -24,7 +24,6 @@ const makeGrid = (size, parent) => {
   //create grid columns (x)
   for (let i = 0; i < size; i++) {
     let column = document.createElement("div");
-    column.id = i;
     parent.appendChild(column);
     //create grid rows (y)
     for (let j = 0; j < size; j++) {
@@ -38,36 +37,7 @@ const makeGrid = (size, parent) => {
       tileID++;
       tile.classList.add("tile");
       //show ship preview on hover
-      const preview = (size, direction) => {
-        if (direction == "vertical") {
-          tile.addEventListener("mouseenter", () => {
-            tile.classList.add("hover");
-            for (let k = 0; k < size; k++) {
-              let next = document.getElementById(`${Number(tile.id) + k}`);
-              next.classList.add("hover");
-            }
-          });
-          tile.addEventListener("mouseleave", () => {
-            tile.classList.remove("hover");
-            for (let k = 0; k < size; k++) {
-              let next = document.getElementById(`${Number(tile.id) + k}`);
-              next.classList.remove("hover");
-            }
-          });
-        }
-      };
-
-      if (player1.myShips.length == 0) {
-        preview(5, direction);
-        //   } else if (player1.myShips.length == 1) {
-        //     let shipSize = 4;
-        //   } else if (player1.shipSize.length == 2) {
-        //     let shipSize = 3;
-        //   } else if (player1.shipSize.length == 3) {
-        //     let shipSize = 3;
-        //   } else if (player1.shipSize.length == 4) {
-        //     let shipSize = 4; }
-      }
+      //TEST PREVIEW OUTSIDE OF THIS FUNCTION
 
       //place ship
       tile.addEventListener("click", () => {
@@ -96,37 +66,89 @@ const makeGrid = (size, parent) => {
   }
 };
 
-// const preview = () => {
-//     const tile = document.getElementsByClassName("tile");
-//     tile.addEventListener("mouseover", () => {
-//       console.log("test");
-//       tile.classList.add("hover");
-//     });
-//   };
+//preview position of ships
+const preview = (size, pos) => {
+  let tile = document.querySelector("#tile");
+  console.log(tile);
+  if (Number(tile.id) < 10) {
+    if (pos == "vertical") {
+      tile.addEventListener("mouseenter", () => {
+        tile.classList.add("hover");
+        for (let k = 0; k < size; k++) {
+          let next = document.getElementById(`0${Number(tile.id) + k}`);
+          next.classList.add("hover");
+        }
+      });
+      tile.addEventListener("mouseleave", () => {
+        tile.classList.remove("hover");
+        for (let k = 0; k < size; k++) {
+          let next = document.getElementById(`0${Number(tile.id) + k}`);
+          next.classList.remove("hover");
+        }
+      });
+      //preview ships horizontally
+    } else if (pos == "horizontal") {
+      tile.addEventListener("mouseover", () => {
+        tile.classList.add("hover");
+        for (let k = 0; k < size; k++) {
+          let next = document.getElementById(`${Number(tile.id) + k * 10}`);
+          next.classList.add("hover");
+        }
+      });
+      tile.addEventListener("mouseleave", () => {
+        tile.classList.remove("hover");
+        for (let k = 0; k < size; k++) {
+          let next = document.getElementById(`${Number(tile.id) + k * 10}`);
+          next.classList.remove("hover");
+        }
+      });
+    }
+  } else {
+    if (pos == "vertical") {
+      tile.addEventListener("mouseenter", () => {
+        tile.classList.add("hover");
+        for (let k = 0; k < size; k++) {
+          let next = document.getElementById(`${Number(tile.id) + k}`);
+          next.classList.add("hover");
+        }
+      });
+      tile.addEventListener("mouseleave", () => {
+        tile.classList.remove("hover");
+        for (let k = 0; k < size; k++) {
+          let next = document.getElementById(`${Number(tile.id) + k}`);
+          next.classList.remove("hover");
+        }
+      });
+    } else if (pos == "horizontal") {
+      tile.addEventListener("mouseover", () => {
+        tile.classList.add("hover");
+        for (let k = 0; k < size; k++) {
+          let next = document.getElementById(`${Number(tile.id) + k * 10}`);
+          next.classList.add("hover");
+        }
+      });
+      tile.addEventListener("mouseleave", () => {
+        tile.classList.remove("hover");
+        for (let k = 0; k < size; k++) {
+          let next = document.getElementById(`${Number(tile.id) + k * 10}`);
+          next.classList.remove("hover");
+        }
+      });
+    }
+  }
+};
+
+// preview ship on board
+if (player1.myShips.length == 0) {
+  preview(5, direction);
+} else if (player1.myShips.length == 1) {
+  preview(4, direction);
+} else if (player1.shipSize.length == 2) {
+  preview(3, direction);
+} else if (player1.shipSize.length == 3) {
+  preview(3, direction);
+} else if (player1.shipSize.length == 4) {
+  preview(2, direction);
+}
 
 makeGrid(10, myGrid);
-
-//makeGrid(10, aiGrid);
-
-// const player1 = new Player(true, true);
-// player1.place("cruiser", 2, 5, 5, "vertical");
-// player1.place("battleship", 4, 0, 0, "horizontal");
-// player1.place("carrier", 5, 9, 0, "vertical");
-// player1.place("destroyer", 3, 3, 2, "vertical");
-// player1.place("submarine", 3, 0, 7, "vertical");
-// console.log(player1.myShips);
-// console.log(player1.myBoard);
-
-// const ai1 = new Player(false, false);
-// ai1.aiPlace("carrier", 5);
-// console.log(ai1.myShips);
-// console.log(ai1.myBoard);
-// console.log(ai1.shots);
-// console.log(ai1.myHits);
-// console.log(ai1.shotSearch);
-
-// ai1.aiShoot(player1);
-// ai1.aiShoot(player1);
-// ai1.aiShoot(player1);
-// ai1.aiShoot(player1);
-// ai1.aiShoot(player1);
