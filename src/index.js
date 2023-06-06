@@ -38,9 +38,37 @@ const makeGrid = (size, parent) => {
       tileID++;
       tile.classList.add("tile");
       //show ship preview on hover
-      tile.addEventListener("mouseover", () => {
-        tile.classList.add("hover");
-      });
+      const preview = (size, direction) => {
+        if (direction == "vertical") {
+          tile.addEventListener("mouseenter", () => {
+            tile.classList.add("hover");
+            for (let k = 0; k < size; k++) {
+              let next = document.getElementById(`${Number(tile.id) + k}`);
+              next.classList.add("hover");
+            }
+          });
+          tile.addEventListener("mouseleave", () => {
+            tile.classList.remove("hover");
+            for (let k = 0; k < size; k++) {
+              let next = document.getElementById(`${Number(tile.id) + k}`);
+              next.classList.remove("hover");
+            }
+          });
+        }
+      };
+
+      if (player1.myShips.length == 0) {
+        preview(5, direction);
+        //   } else if (player1.myShips.length == 1) {
+        //     let shipSize = 4;
+        //   } else if (player1.shipSize.length == 2) {
+        //     let shipSize = 3;
+        //   } else if (player1.shipSize.length == 3) {
+        //     let shipSize = 3;
+        //   } else if (player1.shipSize.length == 4) {
+        //     let shipSize = 4; }
+      }
+
       //place ship
       tile.addEventListener("click", () => {
         const xPosString = String(tile.id)[0];
@@ -62,7 +90,6 @@ const makeGrid = (size, parent) => {
           alert("You have no ships remaining!");
         }
         console.log(player1.myShips);
-        console.log(player1.myBoard);
       });
       column.appendChild(tile);
     }
