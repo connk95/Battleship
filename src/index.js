@@ -8,6 +8,7 @@ const aiGrid = document.getElementById("aiGrid");
 const previewBox = document.getElementById("preview");
 
 const player1 = new Player(true, true);
+const ai1 = new Player(false, false);
 
 //change placement axis
 const axisButton = document.getElementById("direction");
@@ -102,81 +103,103 @@ const makeGrid = (size, parent) => {
       });
 
       //place ship
+
       tile.addEventListener("click", () => {
         const xPosString = String(tile.id)[0];
         const x = Number(xPosString);
         const yPosString = String(tile.id).slice(-1);
         const y = Number(yPosString);
-        //place all ships from longest to shortest
-        if (player1.myShips.length == 0) {
-          player1.place("carrier", 5, x, y, direction);
-          if (direction == "vertical" && y < 6) {
-            tile.classList.add("placed");
-            for (let k = 0; k < 5; k++) {
-              document.getElementById(`${x}${y + k}`).classList.add("placed");
+        if (player1.myShips.length < 5) {
+          //place all ships from longest to shortest
+          if (player1.myShips.length == 0) {
+            player1.place("carrier", 5, x, y, direction);
+            if (direction == "vertical" && y < 6) {
+              tile.classList.add("placed");
+              for (let k = 0; k < 5; k++) {
+                document.getElementById(`${x}${y + k}`).classList.add("placed");
+              }
+            } else if (direction == "horizontal" && x < 6) {
+              tile.classList.add("placed");
+              for (let k = 0; k < 5; k++) {
+                document.getElementById(`${x + k}${y}`).classList.add("placed");
+              }
             }
-          } else if (direction == "horizontal" && x < 6) {
-            tile.classList.add("placed");
-            for (let k = 0; k < 5; k++) {
-              document.getElementById(`${x + k}${y}`).classList.add("placed");
+          } else if (player1.myShips.length == 1) {
+            player1.place("battleship", 4, x, y, direction);
+            if (direction == "vertical" && y < 7) {
+              tile.classList.add("placed");
+              for (let k = 0; k < 4; k++) {
+                document.getElementById(`${x}${y + k}`).classList.add("placed");
+              }
+            } else if (direction == "horizontal" && x < 7) {
+              tile.classList.add("placed");
+              for (let k = 0; k < 4; k++) {
+                document.getElementById(`${x + k}${y}`).classList.add("placed");
+              }
             }
+          } else if (player1.myShips.length == 2) {
+            player1.place("destroyer", 3, x, y, direction);
+            if (direction == "vertical" && y < 8) {
+              tile.classList.add("placed");
+              for (let k = 0; k < 3; k++) {
+                document.getElementById(`${x}${y + k}`).classList.add("placed");
+              }
+            } else if (direction == "horizontal" && x < 8) {
+              tile.classList.add("placed");
+              for (let k = 0; k < 3; k++) {
+                document.getElementById(`${x + k}${y}`).classList.add("placed");
+              }
+            }
+          } else if (player1.myShips.length == 3) {
+            player1.place("submarine", 3, x, y, direction);
+            if (direction == "vertical" && y < 8) {
+              tile.classList.add("placed");
+              for (let k = 0; k < 3; k++) {
+                document.getElementById(`${x}${y + k}`).classList.add("placed");
+              }
+            } else if (direction == "horizontal" && x < 8) {
+              tile.classList.add("placed");
+              for (let k = 0; k < 3; k++) {
+                document.getElementById(`${x + k}${y}`).classList.add("placed");
+              }
+            }
+          } else if (player1.myShips.length == 4) {
+            player1.place("cruiser", 2, x, y, direction);
+            if (direction == "vertical" && y < 9) {
+              tile.classList.add("placed");
+              for (let k = 0; k < 2; k++) {
+                document.getElementById(`${x}${y + k}`).classList.add("placed");
+              }
+            } else if (direction == "horizontal" && x < 9) {
+              tile.classList.add("placed");
+              for (let k = 0; k < 2; k++) {
+                document.getElementById(`${x + k}${y}`).classList.add("placed");
+              }
+            }
+          } else {
+            alert("You have no ships remaining!");
           }
-        } else if (player1.myShips.length == 1) {
-          player1.place("battleship", 4, x, y, direction);
-          tile.classList.add("placed");
-          if (direction == "vertical") {
-            for (let k = 0; k < 4; k++) {
-              document.getElementById(`${x}${y + k}`).classList.add("placed");
-            }
-          } else if (direction == "horizontal") {
-            for (let k = 0; k < 4; k++) {
-              document.getElementById(`${x + k}${y}`).classList.add("placed");
-            }
+          while (previewBox.firstChild) {
+            previewBox.removeChild(previewBox.firstChild);
           }
-        } else if (player1.myShips.length == 2) {
-          player1.place("destroyer", 3, x, y, direction);
-          tile.classList.add("placed");
-          if (direction == "vertical") {
-            for (let k = 0; k < 3; k++) {
-              document.getElementById(`${x}${y + k}`).classList.add("placed");
-            }
-          } else if (direction == "horizontal") {
-            for (let k = 0; k < 3; k++) {
-              document.getElementById(`${x + k}${y}`).classList.add("placed");
-            }
+          preview();
+          console.log(player1.myShips);
+        } else if (player1.myShips.length == 5) {
+          if (ai1.myShips.length == 0) {
+            ai1.aiPlace("carrier", 5);
+            ai1.aiPlace("battleship", 4);
+            ai1.aiPlace("destroyer", 4);
+            ai1.aiPlace("submarine", 4);
+            ai1.aiPlace("cruiser", 2);
+            console.log(ai1.myShips);
           }
-        } else if (player1.myShips.length == 3) {
-          player1.place("submarine", 3, x, y, direction);
-          tile.classList.add("placed");
-          if (direction == "vertical") {
-            for (let k = 0; k < 3; k++) {
-              document.getElementById(`${x}${y + k}`).classList.add("placed");
-            }
-          } else if (direction == "horizontal") {
-            for (let k = 0; k < 3; k++) {
-              document.getElementById(`${x + k}${y}`).classList.add("placed");
-            }
+          let marker = player1.shoot(x, y, ai1);
+          if (marker == false) {
+            tile.classList.add("shot");
+          } else {
+            tile.classList.add("hit");
           }
-        } else if (player1.myShips.length == 4) {
-          player1.place("cruiser", 2, x, y, direction);
-          tile.classList.add("placed");
-          if (direction == "vertical") {
-            for (let k = 0; k < 2; k++) {
-              document.getElementById(`${x}${y + k}`).classList.add("placed");
-            }
-          } else if (direction == "horizontal") {
-            for (let k = 0; k < 2; k++) {
-              document.getElementById(`${x + k}${y}`).classList.add("placed");
-            }
-          }
-        } else {
-          alert("You have no ships remaining!");
         }
-        while (previewBox.firstChild) {
-          previewBox.removeChild(previewBox.firstChild);
-        }
-        preview();
-        console.log(player1.myShips);
       });
       column.appendChild(tile);
     }
@@ -185,6 +208,7 @@ const makeGrid = (size, parent) => {
 
 makeGrid(10, myGrid);
 preview();
+makeGrid(10, aiGrid);
 
 //FOR FUTURE VERSION
 //preview ship length

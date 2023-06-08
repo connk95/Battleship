@@ -59,3 +59,11 @@
 .placed {
   background-color: lightgrey;
 }
+
+.shot {
+  background-color: lightgrey;
+}
+
+.hit {
+  background-color: red;
+}
