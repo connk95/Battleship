@@ -5,6 +5,7 @@ import { Player } from "./player";
 const content = document.getElementById("content");
 const myGrid = document.getElementById("myGrid");
 const aiGrid = document.getElementById("aiGrid");
+const previewBox = document.getElementById("preview");
 
 const player1 = new Player(true, true);
 
@@ -14,16 +15,73 @@ let direction = "vertical";
 axisButton.addEventListener("click", () => {
   if (direction == "vertical") {
     direction = "horizontal";
+    previewBox.style.flexDirection = "row";
   } else if (direction == "horizontal") {
     direction = "vertical";
+    previewBox.style.flexDirection = "column";
   }
 });
+
+//preview ship size before placement
+const preview = () => {
+  if (player1.myShips.length == 0) {
+    let previewTile = document.createElement("div");
+    previewTile.classList.add("previewTile");
+    previewBox.appendChild(previewTile);
+    for (let i = 0; i < 4; i++) {
+      let previewDisplay = document.createElement("div");
+      previewDisplay.classList.add("previewDisplay");
+      previewBox.appendChild(previewDisplay);
+    }
+  } else if (player1.myShips.length == 1) {
+    let previewTile = document.createElement("div");
+    previewTile.classList.add("previewTile");
+    previewBox.appendChild(previewTile);
+    for (let i = 0; i < 3; i++) {
+      let previewDisplay = document.createElement("div");
+      previewDisplay.classList.add("previewDisplay");
+      previewBox.appendChild(previewDisplay);
+    }
+  } else if (player1.myShips.length == 2) {
+    let previewTile = document.createElement("div");
+    previewTile.classList.add("previewTile");
+    previewBox.appendChild(previewTile);
+    for (let i = 0; i < 2; i++) {
+      let previewDisplay = document.createElement("div");
+      previewDisplay.classList.add("previewDisplay");
+      previewBox.appendChild(previewDisplay);
+    }
+  } else if (player1.myShips.length == 3) {
+    let previewTile = document.createElement("div");
+    previewTile.classList.add("previewTile");
+    previewBox.appendChild(previewTile);
+    for (let i = 0; i < 2; i++) {
+      let previewDisplay = document.createElement("div");
+      previewDisplay.classList.add("previewDisplay");
+      previewBox.appendChild(previewDisplay);
+    }
+  } else if (player1.myShips.length == 4) {
+    let previewTile = document.createElement("div");
+    previewTile.classList.add("previewTile");
+    previewBox.appendChild(previewTile);
+    for (let i = 0; i < 1; i++) {
+      let previewDisplay = document.createElement("div");
+      previewDisplay.classList.add("previewDisplay");
+      previewBox.appendChild(previewDisplay);
+    }
+  } else {
+    while (previewBox.firstChild) {
+      previewBox.removeChild(previewBox.firstChild);
+    }
+  }
+};
 
 const makeGrid = (size, parent) => {
   let tileID = 0;
   //create grid columns (x)
   for (let i = 0; i < size; i++) {
     let column = document.createElement("div");
+    column.id = i;
     parent.appendChild(column);
     //create grid rows (y)
     for (let j = 0; j < size; j++) {
@@ -36,8 +94,12 @@ const makeGrid = (size, parent) => {
       }
       tileID++;
       tile.classList.add("tile");
-      //show ship preview on hover
-      //TEST PREVIEW OUTSIDE OF THIS FUNCTION
+      tile.addEventListener("mouseenter", () => {
+        tile.classList.add("hover");
+      });
+      tile.addEventListener("mouseleave", () => {
+        tile.classList.remove("hover");
+      });
 
       //place ship
       tile.addEventListener("click", () => {
@@ -48,17 +110,71 @@ const makeGrid = (size, parent) => {
         //place all ships from longest to shortest
         if (player1.myShips.length == 0) {
           player1.place("carrier", 5, x, y, direction);
+          tile.classList.add("placed");
+          if (direction == "vertical") {
+            for (let k = 0; k < 5; k++) {
+              document.getElementById(`${x}${y + k}`).classList.add("placed");
+            }
+          } else if (direction == "horizontal") {
+            for (let k = 0; k < 5; k++) {
+              document.getElementById(`${x + k}${y}`).classList.add("placed");
+            }
+          }
         } else if (player1.myShips.length == 1) {
           player1.place("battleship", 4, x, y, direction);
+          tile.classList.add("placed");
+          if (direction == "vertical") {
+            for (let k = 0; k < 4; k++) {
+              document.getElementById(`${x}${y + k}`).classList.add("placed");
+            }
+          } else if (direction == "horizontal") {
+            for (let k = 0; k < 4; k++) {
+              document.getElementById(`${x + k}${y}`).classList.add("placed");
+            }
+          }
         } else if (player1.myShips.length == 2) {
           player1.place("destroyer", 3, x, y, direction);
+          tile.classList.add("placed");
+          if (direction == "vertical") {
+            for (let k = 0; k < 3; k++) {
+              document.getElementById(`${x}${y + k}`).classList.add("placed");
+            }
+          } else if (direction == "horizontal") {
+            for (let k = 0; k < 3; k++) {
+              document.getElementById(`${x + k}${y}`).classList.add("placed");
+            }
+          }
         } else if (player1.myShips.length == 3) {
           player1.place("submarine", 3, x, y, direction);
+          tile.classList.add("placed");
+          if (direction == "vertical") {
+            for (let k = 0; k < 3; k++) {
+              document.getElementById(`${x}${y + k}`).classList.add("placed");
+            }
+          } else if (direction == "horizontal") {
+            for (let k = 0; k < 3; k++) {
+              document.getElementById(`${x + k}${y}`).classList.add("placed");
+            }
+          }
         } else if (player1.myShips.length == 4) {
           player1.place("cruiser", 2, x, y, direction);
+          tile.classList.add("placed");
+          if (direction == "vertical") {
+            for (let k = 0; k < 2; k++) {
+              document.getElementById(`${x}${y + k}`).classList.add("placed");
+            }
+          } else if (direction == "horizontal") {
+            for (let k = 0; k < 2; k++) {
+              document.getElementById(`${x + k}${y}`).classList.add("placed");
+            }
+          }
         } else {
           alert("You have no ships remaining!");
         }
+        while (previewBox.firstChild) {
+          previewBox.removeChild(previewBox.firstChild);
+        }
+        preview();
         console.log(player1.myShips);
       });
       column.appendChild(tile);
@@ -66,89 +182,98 @@ const makeGrid = (size, parent) => {
   }
 };
 
-//preview position of ships
-const preview = (size, pos) => {
-  let tile = document.querySelector("#tile");
-  console.log(tile);
-  if (Number(tile.id) < 10) {
-    if (pos == "vertical") {
-      tile.addEventListener("mouseenter", () => {
-        tile.classList.add("hover");
-        for (let k = 0; k < size; k++) {
-          let next = document.getElementById(`0${Number(tile.id) + k}`);
-          next.classList.add("hover");
-        }
-      });
-      tile.addEventListener("mouseleave", () => {
-        tile.classList.remove("hover");
-        for (let k = 0; k < size; k++) {
-          let next = document.getElementById(`0${Number(tile.id) + k}`);
-          next.classList.remove("hover");
-        }
-      });
-      //preview ships horizontally
-    } else if (pos == "horizontal") {
-      tile.addEventListener("mouseover", () => {
-        tile.classList.add("hover");
-        for (let k = 0; k < size; k++) {
-          let next = document.getElementById(`${Number(tile.id) + k * 10}`);
-          next.classList.add("hover");
-        }
-      });
-      tile.addEventListener("mouseleave", () => {
-        tile.classList.remove("hover");
-        for (let k = 0; k < size; k++) {
-          let next = document.getElementById(`${Number(tile.id) + k * 10}`);
-          next.classList.remove("hover");
-        }
-      });
-    }
-  } else {
-    if (pos == "vertical") {
-      tile.addEventListener("mouseenter", () => {
-        tile.classList.add("hover");
-        for (let k = 0; k < size; k++) {
-          let next = document.getElementById(`${Number(tile.id) + k}`);
-          next.classList.add("hover");
-        }
-      });
-      tile.addEventListener("mouseleave", () => {
-        tile.classList.remove("hover");
-        for (let k = 0; k < size; k++) {
-          let next = document.getElementById(`${Number(tile.id) + k}`);
-          next.classList.remove("hover");
-        }
-      });
-    } else if (pos == "horizontal") {
-      tile.addEventListener("mouseover", () => {
-        tile.classList.add("hover");
-        for (let k = 0; k < size; k++) {
-          let next = document.getElementById(`${Number(tile.id) + k * 10}`);
-          next.classList.add("hover");
-        }
-      });
-      tile.addEventListener("mouseleave", () => {
-        tile.classList.remove("hover");
-        for (let k = 0; k < size; k++) {
-          let next = document.getElementById(`${Number(tile.id) + k * 10}`);
-          next.classList.remove("hover");
-        }
-      });
-    }
-  }
-};
-
-// preview ship on board
-if (player1.myShips.length == 0) {
-  preview(5, direction);
-} else if (player1.myShips.length == 1) {
-  preview(4, direction);
-} else if (player1.shipSize.length == 2) {
-  preview(3, direction);
-} else if (player1.shipSize.length == 3) {
-  preview(3, direction);
-} else if (player1.shipSize.length == 4) {
-  preview(2, direction);
-}
-
 makeGrid(10, myGrid);
+preview();
+
+//FOR FUTURE VERSION
+//preview ship length
+// //const preview = (size) => {
+// const tileCollection = document.querySelectorAll(".tile");
+// for (let l = 0; l < tileCollection.length; l++) {
+//   let tile = tileCollection[l];
+//   let shipLength = 0;
+//   if (player1.myShips.length == 0) {
+//     shipLength = 5;
+//   } else if (player1.myShips.length == 1) {
+//     shipLength = 4;
+//   } else if (player1.myShips.length == 2) {
+//     shipLength = 3;
+//   } else if (player1.myShips.length == 3) {
+//     shipLength = 3;
+//   } else if (player1.myShips.length == 4) {
+//     shipLength = 2;
+//   } else if (player1.myShips.length == 5) {
+//     shipLength = 0;
+//   }
+//   if (Number(tile.id) < 10) {
+//     if (direction == "vertical") {
+//       console.log("test vert");
+//       tile.addEventListener("mouseenter", () => {
+//         tile.classList.add("hover");
+//         for (let k = 0; k < shipLength; k++) {
+//           let next = document.getElementById(`0${Number(tile.id) + k}`);
+//           next.classList.add("hover");
+//         }
+//       });
+//       tile.addEventListener("mouseleave", () => {
+//         tile.classList.remove("hover");
+//         for (let k = 0; k < shipLength; k++) {
+//           let next = document.getElementById(`0${Number(tile.id) + k}`);
+//           next.classList.remove("hover");
+//         }
+//       });
+//       //preview ships horizontally
+//     } else if (direction == "horizontal") {
+//       console.log("test horiz");
+//       tile.addEventListener("mouseover", () => {
+//         tile.classList.add("hover");
+//         for (let k = 0; k < shipLength; k++) {
+//           let next = document.getElementById(`${Number(tile.id) + k * 10}`);
+//           next.classList.add("hover");
+//         }
+//       });
+//       tile.addEventListener("mouseleave", () => {
+//         tile.classList.remove("hover");
+//         for (let k = 0; k < shipLength; k++) {
+//           let next = document.getElementById(`${Number(tile.id) + k * 10}`);
+//           next.classList.remove("hover");
+//         }
+//       });
+//     }
+//   } else {
+//     if (direction == "vertical") {
+//       tile.addEventListener("mouseenter", () => {
+//         tile.classList.add("hover");
+//         for (let k = 0; k < shipLength; k++) {
+//           let next = document.getElementById(`${Number(tile.id) + k}`);
+//           next.classList.add("hover");
+//         }
+//       });
+//       tile.addEventListener("mouseleave", () => {
+//         tile.classList.remove("hover");
+//         for (let k = 0; k < shipLength; k++) {
+//           let next = document.getElementById(`${Number(tile.id) + k}`);
+//           next.classList.remove("hover");
+//         }
+//       });
+//     } else if (direction == "horizontal") {
+//       tile.addEventListener("mouseover", () => {
+//         tile.classList.add("hover");
+//         for (let k = 0; k < shipLength; k++) {
+//           let next = document.getElementById(`${Number(tile.id) + k * 10}`);
+//           next.classList.add("hover");
+//         }
+//       });
+//       tile.addEventListener("mouseleave", () => {
+//         tile.classList.remove("hover");
+//         for (let k = 0; k < shipLength; k++) {
+//           let next = document.getElementById(`${Number(tile.id) + k * 10}`);
+//           next.classList.remove("hover");
+//         }
+//       });
+//     }
+//   }
+// }
+//};
+
+//preview(5, "vertical");
