@@ -110,12 +110,13 @@ const makeGrid = (size, parent) => {
         //place all ships from longest to shortest
         if (player1.myShips.length == 0) {
           player1.place("carrier", 5, x, y, direction);
-          tile.classList.add("placed");
-          if (direction == "vertical") {
+          if (direction == "vertical" && y < 6) {
+            tile.classList.add("placed");
             for (let k = 0; k < 5; k++) {
               document.getElementById(`${x}${y + k}`).classList.add("placed");
             }
-          } else if (direction == "horizontal") {
+          } else if (direction == "horizontal" && x < 6) {
+            tile.classList.add("placed");
             for (let k = 0; k < 5; k++) {
               document.getElementById(`${x + k}${y}`).classList.add("placed");
             }

@@ -13,6 +13,14 @@ export class Player {
   }
 
   place(ship, size, x, y, direction) {
+    if (direction == "vertical" && y + size > this.myBoard.size) {
+      alert("Please select a valid location!");
+      return;
+    }
+    if (direction == "horizontal" && x + size > this.myBoard.size) {
+      alert("Please select a valid location!");
+      return;
+    }
     for (let i = 0; i < this.myShips.length; i++) {
       for (let j = 0; j < this.myShips[i].location.length; j++) {
         let placedX = this.myShips[i].location[j][0];
