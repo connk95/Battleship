@@ -76,7 +76,7 @@ export class Gameboard {
         }
       }
     }
-    console.log("Miss!");
+    alert("Miss!");
     return false;
   }
 }

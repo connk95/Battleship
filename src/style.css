@@ -12,7 +12,14 @@
   width: 400px;
 }
 
-.tile {
+.myTile {
+  display: flex;
+  height: 40px;
+  width: 40px;
+  border: 1px solid black;
+}
+
+.aiTile {
   display: flex;
   height: 40px;
   width: 40px;

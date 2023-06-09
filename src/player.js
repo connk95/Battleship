@@ -49,6 +49,7 @@ export class Player {
     const playerShot = player.myBoard.receiveAttack(x, y);
     if (playerShot != false) {
       this.myHits.push(playerShot);
+      return true;
     }
   }
 
