@@ -12,7 +12,7 @@ const previewBox = document.getElementById("preview");
 
 const player1 = new Player(true, true);
 const ai1 = new Player(false, false);
-const turn = 0;
+let myTurn = true;
 
 //change placement axis
 const axisButton = document.getElementById("direction");
@@ -219,38 +219,38 @@ const placeShip = () => {
       if (player1.myShips.length == 5) {
         aiPlace();
         aiGrid.style.visibility = "visible";
-        attackTile();
+        turnHandler();
       }
     });
   }
 };
 
-const attackTile = () => {
-  if (player1.myShips.length == 5 && ai1.myShips.length == 5) {
-    let myTurn = true;
+const turnHandler = () => {
+  if (myTurn == true) {
+    attackTile();
     console.log(myTurn);
-    if (myTurn == true) {
-      for (let i = 0; i < aiTiles.length; i++) {
-        aiTiles[i].addEventListener("click", () => {
-          let xPosString = String(myTiles[i].id)[0];
-          let x = Number(xPosString);
-          let yPosString = String(myTiles[i].id).slice(-1);
-          let y = Number(yPosString);
-          let marker = player1.shoot(x, y, ai1);
-          console.log(marker);
-          if (marker == true) {
-            aiTiles[i].classList.add("hit");
-          } else {
-            aiTiles[i].classList.add("shot");
-          }
-        });
+  } else if (myTurn == false) {
+    ai1.aiShoot(player1);
+    myTurn = true;
+  }
+  turnHandler();
+};
+
+const attackTile = () => {
+  for (let i = 0; i < aiTiles.length; i++) {
+    aiTiles[i].addEventListener("click", () => {
+      let xPosString = String(myTiles[i].id)[0];
+      let x = Number(xPosString);
+      let yPosString = String(myTiles[i].id).slice(-1);
+      let y = Number(yPosString);
+      let marker = player1.shoot(x, y, ai1);
+      if (marker == true) {
+        aiTiles[i].classList.add("hit");
+      } else {
+        aiTiles[i].classList.add("shot");
       }
-      myTurn = false;
-    } else if (myTurn == false) {
-      ai1.aiShoot();
-      myTurn = true;
-      attackTile();
-    }
+      return (myTurn = false);
+    });
   }
 };
 
