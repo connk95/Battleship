@@ -22,7 +22,7 @@ export class Ship {
     if (this.hits.length == this.size) {
       this.sunk = true;
       alert(`You sunk my ${this.name}!`);
+      return true;
     }
-    return true;
   }
 }

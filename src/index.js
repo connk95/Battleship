@@ -255,7 +255,7 @@ const attackTile = () => {
         }
         myTurn = false;
         console.log(ai1.myShips);
-        setTimeout(aiAttack, 3000);
+        setTimeout(aiAttack, 2000);
       }
     });
   }

@@ -53,6 +53,7 @@ export class Player {
     }
   }
 
+  //aiPlace sometimes overlaps ships
   aiPlace(ship, size) {
     let horizontalX = Math.floor(Math.random() * (this.myBoard.size - size));
     let horizontalY = Math.floor(Math.random() * this.myBoard.size);
@@ -91,18 +92,29 @@ export class Player {
     this.myShips.push(newShip);
   }
 
+  //clear myHits once ship is sunk
   aiShoot(player) {
+    console.log(this.shots);
+    console.log(this.myHits);
+    console.log(this.shotSearch);
     if (this.shotSearch.length != 0) {
       let x = this.shotSearch[0][0];
       let y = this.shotSearch[0][1];
       for (let i = 0; i < this.shots.length; i++) {
         if (x == this.shots[i][0] && y == this.shots[i][1]) {
+          this.shotSearch.shift();
+          this.aiShoot(player);
           return;
         }
       }
       let aiShot = player.myBoard.receiveAttack(x, y);
       this.shots.push([x, y]);
-      if (aiShot != false) {
+      //new
+      if (aiShot == true) {
+        this.myHits = [];
+        this.shotSearch = [];
+        return;
+      } else if (aiShot != false) {
         this.myHits.push(aiShot);
         this.shotSearch = [];
         this.aiDestroy();

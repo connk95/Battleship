@@ -71,7 +71,12 @@ export class Gameboard {
           y == this.ships[i].location[j][1]
         ) {
           this.hits.push(attack);
-          this.ships[i].hit(attack);
+          let thisAttack = this.ships[i].hit(attack);
+          //new
+          if (thisAttack == true) {
+            alert("Hit!");
+            return true;
+          }
           alert("Hit!");
           return [x, y];
         }
