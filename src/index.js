@@ -219,37 +219,44 @@ const placeShip = () => {
       if (player1.myShips.length == 5) {
         aiPlace();
         aiGrid.style.visibility = "visible";
-        turnHandler();
+        //turnHandler();
+        attackTile();
       }
     });
   }
 };
 
-const turnHandler = () => {
+const aiAttack = () => {
   if (myTurn == true) {
-    attackTile();
-    console.log(myTurn);
+    return;
   } else if (myTurn == false) {
     ai1.aiShoot(player1);
+    console.log(player1.myShips);
     myTurn = true;
   }
-  turnHandler();
 };
 
 const attackTile = () => {
   for (let i = 0; i < aiTiles.length; i++) {
     aiTiles[i].addEventListener("click", () => {
-      let xPosString = String(myTiles[i].id)[0];
-      let x = Number(xPosString);
-      let yPosString = String(myTiles[i].id).slice(-1);
-      let y = Number(yPosString);
-      let marker = player1.shoot(x, y, ai1);
-      if (marker == true) {
-        aiTiles[i].classList.add("hit");
-      } else {
-        aiTiles[i].classList.add("shot");
+      if (myTurn == false) {
+        alert("It's not your turn!");
+        return;
+      } else if (myTurn == true) {
+        let xPosString = String(myTiles[i].id)[0];
+        let x = Number(xPosString);
+        let yPosString = String(myTiles[i].id).slice(-1);
+        let y = Number(yPosString);
+        let marker = player1.shoot(x, y, ai1);
+        if (marker == true) {
+          aiTiles[i].classList.add("hit");
+        } else {
+          aiTiles[i].classList.add("shot");
+        }
+        myTurn = false;
+        console.log(ai1.myShips);
+        setTimeout(aiAttack, 3000);
       }
-      return (myTurn = false);
     });
   }
 };

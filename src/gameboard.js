@@ -72,6 +72,7 @@ export class Gameboard {
         ) {
           this.hits.push(attack);
           this.ships[i].hit(attack);
+          alert("Hit!");
           return [x, y];
         }
       }

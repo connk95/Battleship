@@ -121,6 +121,7 @@ export class Player {
       this.shots.push([x, y]);
       if (aiShot != false) {
         this.myHits.push(aiShot);
+        this.shotSearch = [];
         this.aiDestroy();
       }
     }
@@ -142,7 +143,7 @@ export class Player {
       if (x < 9) {
         this.shotSearch.push([x + 1, y]);
       }
-    } else {
+    } else if (this.myHits.length > 1) {
       const x1 = this.myHits[0][0];
       const y1 = this.myHits[0][1];
       const x2 = this.myHits[this.myHits.length - 1][0];
