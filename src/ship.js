@@ -11,8 +11,8 @@ export class Ship {
   }
 
   hit(tile) {
-    this.hits.push(tile);
     let sunk = this.isSunk();
+    this.hits.push(tile);
     if (sunk == true) {
       return true;
     }

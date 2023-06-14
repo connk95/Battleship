@@ -53,7 +53,6 @@ export class Player {
     }
   }
 
-  //aiPlace sometimes overlaps ships
   aiPlace(ship, size) {
     let horizontalX = Math.floor(Math.random() * (this.myBoard.size - size));
     let horizontalY = Math.floor(Math.random() * this.myBoard.size);
@@ -63,11 +62,13 @@ export class Player {
       for (let j = 0; j < this.myShips[i].location.length; j++) {
         let placedX = this.myShips[i].location[j][0];
         let placedY = this.myShips[i].location[j][1];
-        if (
-          (placedX == verticalX && placedY == verticalY) ||
-          (placedX == horizontalX && placedY == horizontalY)
-        ) {
-          return;
+        for (let k = 0; k < size; k++) {
+          if (
+            (placedX == verticalX + k && placedY == verticalY + k) ||
+            (placedX == horizontalX + k && placedY == horizontalY + k)
+          ) {
+            return;
+          }
         }
       }
     }
@@ -92,9 +93,7 @@ export class Player {
     this.myShips.push(newShip);
   }
 
-  //clear myHits once ship is sunk
   aiShoot(player) {
-    console.log(this.shots);
     console.log(this.myHits);
     console.log(this.shotSearch);
     if (this.shotSearch.length != 0) {
@@ -109,7 +108,6 @@ export class Player {
       }
       let aiShot = player.myBoard.receiveAttack(x, y);
       this.shots.push([x, y]);
-      //new
       if (aiShot == true) {
         this.myHits = [];
         this.shotSearch = [];
@@ -156,14 +154,19 @@ export class Player {
         this.shotSearch.push([x + 1, y]);
       }
     } else if (this.myHits.length > 1) {
+      console.log("test");
       const x1 = this.myHits[0][0];
       const y1 = this.myHits[0][1];
       const x2 = this.myHits[this.myHits.length - 1][0];
       const y2 = this.myHits[this.myHits.length - 1][1];
-      if (x1 == x2) {
+      if (x1 == x2 && y1 < y2) {
         this.shotSearch.push([x1, y1 - 1], [x2, y2 + 1]);
-      } else if (y1 == y2) {
+      } else if (x1 == x2 && y1 > y2) {
+        this.shotSearch.push([x1, y1 + 1], [x2, y2 - 1]);
+      } else if (y1 == y2 && x1 < x2) {
         this.shotSearch.push([x1 - 1, y1], [x2 + 1, y2]);
+      } else if (y1 == y2 && x1 > x2) {
+        this.shotSearch.push([x1 + 1, y1], [x2 - 1, y2]);
       }
     }
   }
