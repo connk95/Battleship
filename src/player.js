@@ -94,16 +94,13 @@ export class Player {
   }
 
   aiShoot(player) {
-    console.log(this.myHits);
-    console.log(this.shotSearch);
     if (this.shotSearch.length != 0) {
       let x = this.shotSearch[0][0];
       let y = this.shotSearch[0][1];
       for (let i = 0; i < this.shots.length; i++) {
         if (x == this.shots[i][0] && y == this.shots[i][1]) {
           this.shotSearch.shift();
-          this.aiShoot(player);
-          return;
+          return this.aiShoot(player);
         }
       }
       let aiShot = player.myBoard.receiveAttack(x, y);
@@ -111,20 +108,24 @@ export class Player {
       if (aiShot == true) {
         this.myHits = [];
         this.shotSearch = [];
-        return;
+        return [x, y, true];
       } else if (aiShot != false) {
         this.myHits.push(aiShot);
         this.shotSearch = [];
         this.aiDestroy();
+        return [x, y, true];
       } else {
         this.shotSearch.shift();
+        return [x, y, false];
       }
     } else {
+      this.shotSearch = [];
       let x = Math.floor(Math.random() * player.myBoard.size);
       let y = Math.floor(Math.random() * player.myBoard.size);
       for (let i = 0; i < this.shots.length; i++) {
         if (x == this.shots[i][0] && y == this.shots[i][1]) {
-          return;
+          // this.shotSearch = [];
+          return this.aiShoot(player);
         }
       }
       let aiShot = player.myBoard.receiveAttack(x, y);
@@ -133,6 +134,9 @@ export class Player {
         this.myHits.push(aiShot);
         this.shotSearch = [];
         this.aiDestroy();
+        return [x, y, true];
+      } else {
+        return [x, y, false];
       }
     }
   }
@@ -154,7 +158,6 @@ export class Player {
         this.shotSearch.push([x + 1, y]);
       }
     } else if (this.myHits.length > 1) {
-      console.log("test");
       const x1 = this.myHits[0][0];
       const y1 = this.myHits[0][1];
       const x2 = this.myHits[this.myHits.length - 1][0];

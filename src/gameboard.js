@@ -74,7 +74,7 @@ export class Gameboard {
           let thisAttack = this.ships[i].hit(attack);
           if (thisAttack == true) {
             alert("Hit!");
-            return true;
+            return [x, y, true];
           }
           alert("Hit!");
           return [x, y];

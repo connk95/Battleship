@@ -11,9 +11,9 @@ export class Ship {
   }
 
   hit(tile) {
-    let sunk = this.isSunk();
     this.hits.push(tile);
-    if (sunk == true) {
+    this.isSunk();
+    if (this.sunk == true) {
       return true;
     }
   }
@@ -22,7 +22,6 @@ export class Ship {
     if (this.hits.length == this.size) {
       this.sunk = true;
       alert(`You sunk my ${this.name}!`);
-      return true;
     }
   }
 }

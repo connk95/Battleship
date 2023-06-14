@@ -214,12 +214,10 @@ const placeShip = () => {
           previewBox.removeChild(previewBox.firstChild);
         }
         preview();
-        console.log(player1.myShips);
       }
       if (player1.myShips.length == 5) {
         aiPlace();
         aiGrid.style.visibility = "visible";
-        //turnHandler();
         attackTile();
       }
     });
@@ -230,8 +228,22 @@ const aiAttack = () => {
   if (myTurn == true) {
     return;
   } else if (myTurn == false) {
-    ai1.aiShoot(player1);
-    console.log(player1.myShips);
+    let aiAttackTile = ai1.aiShoot(player1);
+    console.log(aiAttackTile);
+    let x = aiAttackTile[0];
+    let y = aiAttackTile[1];
+    let hit = aiAttackTile[2];
+    for (let i = 0; i < myTiles.length; i++) {
+      let xPosString = String(myTiles[i].id)[0];
+      let myX = Number(xPosString);
+      let yPosString = String(myTiles[i].id).slice(-1);
+      let myY = Number(yPosString);
+      if (aiAttackTile[2] == true && x == myX && y == myY) {
+        myTiles[i].classList.add("hit");
+      } else if (aiAttackTile[2] == false && x == myX && y == myY) {
+        myTiles[i].classList.add("shot");
+      }
+    }
     myTurn = true;
   }
 };
@@ -243,9 +255,9 @@ const attackTile = () => {
         alert("It's not your turn!");
         return;
       } else if (myTurn == true) {
-        let xPosString = String(myTiles[i].id)[0];
+        let xPosString = String(aiTiles[i].id)[0];
         let x = Number(xPosString);
-        let yPosString = String(myTiles[i].id).slice(-1);
+        let yPosString = String(aiTiles[i].id).slice(-1);
         let y = Number(yPosString);
         let marker = player1.shoot(x, y, ai1);
         if (marker == true) {
@@ -254,7 +266,6 @@ const attackTile = () => {
           aiTiles[i].classList.add("shot");
         }
         myTurn = false;
-        console.log(ai1.myShips);
         setTimeout(aiAttack, 2000);
       }
     });
@@ -265,7 +276,6 @@ makeGrid(10, myGrid, true);
 preview();
 placeShip();
 makeGrid(10, aiGrid, false);
-console.log(ai1.myShips);
 
 //FOR FUTURE VERSION
 //preview ship length
