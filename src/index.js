@@ -1,8 +1,5 @@
-import { Ship } from "./ship";
-import { Gameboard } from "./gameboard";
 import { Player } from "./player";
 
-const content = document.getElementById("content");
 const myGrid = document.getElementById("myGrid");
 const myTiles = document.getElementsByClassName("myTile");
 const aiGrid = document.getElementById("aiGrid");
@@ -232,7 +229,6 @@ const aiAttack = () => {
     console.log(aiAttackTile);
     let x = aiAttackTile[0];
     let y = aiAttackTile[1];
-    let hit = aiAttackTile[2];
     for (let i = 0; i < myTiles.length; i++) {
       let xPosString = String(myTiles[i].id)[0];
       let myX = Number(xPosString);
@@ -240,10 +236,12 @@ const aiAttack = () => {
       let myY = Number(yPosString);
       if (aiAttackTile[2] == true && x == myX && y == myY) {
         myTiles[i].classList.add("hit");
+        //checkWin();
       } else if (aiAttackTile[2] == false && x == myX && y == myY) {
         myTiles[i].classList.add("shot");
       }
     }
+    checkWin(player1);
     myTurn = true;
   }
 };
@@ -262,13 +260,40 @@ const attackTile = () => {
         let marker = player1.shoot(x, y, ai1);
         if (marker == true) {
           aiTiles[i].classList.add("hit");
+          //checkWin();
         } else {
           aiTiles[i].classList.add("shot");
         }
         myTurn = false;
-        setTimeout(aiAttack, 2000);
+        checkWin(ai1);
+        setTimeout(aiAttack, 1000);
       }
     });
+  }
+};
+
+const checkWin = (player) => {
+  if (player.myBoard.hits.length == 17) {
+    if (player.isHuman == false) {
+      alert("You win!");
+    } else if (player.isHuman == true) {
+      alert("You lose!");
+    }
+    while (myGrid.firstChild) {
+      aiGrid.removeChild(aiGrid.firstChild);
+      myGrid.removeChild(myGrid.firstChild);
+    }
+    let playAgain = confirm("Play again?");
+    if (playAgain) {
+      makeGrid(10, myGrid, true);
+      preview();
+      placeShip();
+      makeGrid(10, aiGrid, false);
+    } else {
+      alert("Thank you for playing!");
+    }
+  } else {
+    return;
   }
 };
 

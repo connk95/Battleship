@@ -119,7 +119,7 @@ export class Player {
         return [x, y, false];
       }
     } else {
-      this.shotSearch = [];
+      this.myHits = [];
       let x = Math.floor(Math.random() * player.myBoard.size);
       let y = Math.floor(Math.random() * player.myBoard.size);
       for (let i = 0; i < this.shots.length; i++) {
