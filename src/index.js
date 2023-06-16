@@ -6,6 +6,7 @@ const aiGrid = document.getElementById("aiGrid");
 const aiTiles = document.getElementsByClassName("aiTile");
 aiGrid.style.visibility = "hidden";
 const previewBox = document.getElementById("preview");
+const shipPreview = document.getElementById("shipPreview");
 
 const player1 = new Player(true, true);
 const ai1 = new Player(false, false);
@@ -213,6 +214,7 @@ const placeShip = () => {
         preview();
       }
       if (player1.myShips.length == 5) {
+        shipPreview.style.visibility = "hidden";
         aiPlace();
         aiGrid.style.visibility = "visible";
         attackTile();
@@ -265,8 +267,10 @@ const attackTile = () => {
           aiTiles[i].classList.add("shot");
         }
         myTurn = false;
-        checkWin(ai1);
-        setTimeout(aiAttack, 1000);
+        let win = checkWin(ai1);
+        if (win == false) {
+          setTimeout(aiAttack, 1000);
+        }
       }
     });
   }
@@ -285,15 +289,29 @@ const checkWin = (player) => {
     }
     let playAgain = confirm("Play again?");
     if (playAgain) {
+      player1.turn = true;
+      player1.myBoard = new Gameboard(10);
+      player1.myShips = [];
+      player1.shots = [];
+      player1.myHits = [];
+      player1.shotSearch = [];
+      ai1.turn = false;
+      ai1.myBoard = new Gameboard(10);
+      ai1.myShips = [];
+      ai1.shots = [];
+      ai1.myHits = [];
+      ai1.shotSearch = [];
       makeGrid(10, myGrid, true);
       preview();
       placeShip();
       makeGrid(10, aiGrid, false);
+      shipPreview.style.visibility = "visible";
     } else {
       alert("Thank you for playing!");
     }
+    return true;
   } else {
-    return;
+    return false;
   }
 };
 
