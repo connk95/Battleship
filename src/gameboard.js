@@ -1,6 +1,8 @@
 import { Ship } from "./ship";
 import { Player } from "./player";
 
+const preview = document.getElementById("preview");
+
 export class Gameboard {
   constructor(size) {
     this.size = size;
@@ -73,15 +75,15 @@ export class Gameboard {
           this.hits.push(attack);
           let thisAttack = this.ships[i].hit(attack);
           if (thisAttack == true) {
-            alert("Hit!");
+            //alert("Hit!");
             return [x, y, true];
           }
-          alert("Hit!");
+          //alert("Hit!");
           return [x, y];
         }
       }
     }
-    alert("Miss!");
+    //alert("Miss!");
     return false;
   }
 }

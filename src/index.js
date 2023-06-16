@@ -1,12 +1,68 @@
 import { Player } from "./player";
+import "./style.css";
 
-const myGrid = document.getElementById("myGrid");
+const content = document.getElementById("content");
+//const myGrid = document.getElementById("myGrid");
 const myTiles = document.getElementsByClassName("myTile");
-const aiGrid = document.getElementById("aiGrid");
-const aiTiles = document.getElementsByClassName("aiTile");
-aiGrid.style.visibility = "hidden";
-const previewBox = document.getElementById("preview");
-const shipPreview = document.getElementById("shipPreview");
+//const aiGrid = document.getElementById("aiGrid");
+//aiGrid.style.visibility = "hidden";
+//const previewBox = document.getElementById("preview");
+//const shipPreview = document.getElementById("shipPreview");
+
+const newPreview = () => {
+  while (content.firstChild) {
+    content.removeChild(content.firstChild);
+  }
+  let myUI = document.createElement("div");
+  myUI.id = "myUI";
+  content.appendChild(myUI);
+
+  let myDisplay = document.createElement("div");
+  myDisplay.id = "myDisplay";
+  myUI.appendChild(myDisplay);
+
+  let myGrid = document.createElement("div");
+  myGrid.id = "myGrid";
+  myGrid.classList.add("grid");
+  myDisplay.appendChild(myGrid);
+
+  let shipPreview = document.createElement("div");
+  shipPreview.id = "shipPreview";
+  myDisplay.appendChild(shipPreview);
+
+  let direction = document.createElement("button");
+  direction.id = "direction";
+  direction.innerHTML = "Axis";
+  direction.addEventListener("click", () => {
+    if (direction == "vertical") {
+      direction = "horizontal";
+      previewBox.style.flexDirection = "row";
+    } else if (direction == "horizontal") {
+      direction = "vertical";
+      previewBox.style.flexDirection = "column";
+    }
+  });
+  let previewBox = document.createElement("div");
+  previewBox.id = "preview";
+  shipPreview.appendChild(direction);
+  shipPreview.appendChild(previewBox);
+};
+newPreview();
+
+const gameStart = () => {
+  let shipPreview = document.getElementById("shipPreview");
+  while (shipPreview.firstChild) {
+    shipPreview.removeChild(shipPreview.firstChild);
+  }
+  let aiUI = document.createElement("div");
+  aiUI.id = "aiUI";
+  content.appendChild(aiUI);
+
+  let aiGrid = document.createElement("div");
+  aiGrid.id = "aiGrid";
+  aiGrid.classList.add("grid");
+  aiUI.appendChild(aiGrid);
+};
 
 const player1 = new Player(true, true);
 const ai1 = new Player(false, false);
@@ -14,6 +70,7 @@ let myTurn = true;
 
 //change placement axis
 const axisButton = document.getElementById("direction");
+const previewBox = document.getElementById("preview");
 let direction = "vertical";
 axisButton.addEventListener("click", () => {
   if (direction == "vertical") {
@@ -45,6 +102,7 @@ const aiPlace = () => {
 
 //preview ship size before placement
 const preview = () => {
+  let previewBox = document.getElementById("preview");
   if (player1.myShips.length == 0) {
     let previewTile = document.createElement("div");
     previewTile.classList.add("previewTile");
@@ -55,6 +113,9 @@ const preview = () => {
       previewBox.appendChild(previewDisplay);
     }
   } else if (player1.myShips.length == 1) {
+    while (previewBox.firstChild) {
+      previewBox.removeChild(previewBox.firstChild);
+    }
     let previewTile = document.createElement("div");
     previewTile.classList.add("previewTile");
     previewBox.appendChild(previewTile);
@@ -64,6 +125,9 @@ const preview = () => {
       previewBox.appendChild(previewDisplay);
     }
   } else if (player1.myShips.length == 2) {
+    while (previewBox.firstChild) {
+      previewBox.removeChild(previewBox.firstChild);
+    }
     let previewTile = document.createElement("div");
     previewTile.classList.add("previewTile");
     previewBox.appendChild(previewTile);
@@ -73,6 +137,9 @@ const preview = () => {
       previewBox.appendChild(previewDisplay);
     }
   } else if (player1.myShips.length == 3) {
+    while (previewBox.firstChild) {
+      previewBox.removeChild(previewBox.firstChild);
+    }
     let previewTile = document.createElement("div");
     previewTile.classList.add("previewTile");
     previewBox.appendChild(previewTile);
@@ -82,6 +149,9 @@ const preview = () => {
       previewBox.appendChild(previewDisplay);
     }
   } else if (player1.myShips.length == 4) {
+    while (previewBox.firstChild) {
+      previewBox.removeChild(previewBox.firstChild);
+    }
     let previewTile = document.createElement("div");
     previewTile.classList.add("previewTile");
     previewBox.appendChild(previewTile);
@@ -214,9 +284,11 @@ const placeShip = () => {
         preview();
       }
       if (player1.myShips.length == 5) {
-        shipPreview.style.visibility = "hidden";
+        //shipPreview.style.visibility = "hidden";
+        gameStart();
+        makeGrid(10, aiGrid, false);
         aiPlace();
-        aiGrid.style.visibility = "visible";
+        //aiGrid.style.visibility = "visible";
         attackTile();
       }
     });
@@ -228,7 +300,6 @@ const aiAttack = () => {
     return;
   } else if (myTurn == false) {
     let aiAttackTile = ai1.aiShoot(player1);
-    console.log(aiAttackTile);
     let x = aiAttackTile[0];
     let y = aiAttackTile[1];
     for (let i = 0; i < myTiles.length; i++) {
@@ -238,9 +309,10 @@ const aiAttack = () => {
       let myY = Number(yPosString);
       if (aiAttackTile[2] == true && x == myX && y == myY) {
         myTiles[i].classList.add("hit");
-        //checkWin();
+        notification("We've taken a hit!");
       } else if (aiAttackTile[2] == false && x == myX && y == myY) {
         myTiles[i].classList.add("shot");
+        notification("The enemy has missed!");
       }
     }
     checkWin(player1);
@@ -248,7 +320,19 @@ const aiAttack = () => {
   }
 };
 
+const notification = (message) => {
+  let shipPreview = document.getElementById("shipPreview");
+  shipPreview.style.justifyContent = "center";
+  let newMessage = document.createElement("p");
+  newMessage.innerHTML = message;
+  shipPreview.appendChild(newMessage);
+  setTimeout(function () {
+    newMessage.remove();
+  }, 1000);
+};
+
 const attackTile = () => {
+  const aiTiles = document.getElementsByClassName("aiTile");
   for (let i = 0; i < aiTiles.length; i++) {
     aiTiles[i].addEventListener("click", () => {
       if (myTurn == false) {
@@ -262,14 +346,17 @@ const attackTile = () => {
         let marker = player1.shoot(x, y, ai1);
         if (marker == true) {
           aiTiles[i].classList.add("hit");
-          //checkWin();
+          //typeWriter("Enemy hit!");
+          notification("Enemy hit!");
         } else {
           aiTiles[i].classList.add("shot");
+          //typeWriter("You missed!");
+          notification("Miss!");
         }
         myTurn = false;
         let win = checkWin(ai1);
         if (win == false) {
-          setTimeout(aiAttack, 1000);
+          setTimeout(aiAttack, 1500);
         }
       }
     });
@@ -277,6 +364,8 @@ const attackTile = () => {
 };
 
 const checkWin = (player) => {
+  let aiGrid = document.getElementById("aiGrid");
+  let myGrid = document.getElementById("myGrid");
   if (player.myBoard.hits.length == 17) {
     if (player.isHuman == false) {
       alert("You win!");
@@ -318,7 +407,6 @@ const checkWin = (player) => {
 makeGrid(10, myGrid, true);
 preview();
 placeShip();
-makeGrid(10, aiGrid, false);
 
 //FOR FUTURE VERSION
 //preview ship length
