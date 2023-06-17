@@ -8,6 +8,10 @@ const myTiles = document.getElementsByClassName("myTile");
 //aiGrid.style.visibility = "hidden";
 //const previewBox = document.getElementById("preview");
 //const shipPreview = document.getElementById("shipPreview");
+let direction = "vertical";
+const player1 = new Player(true, true);
+const ai1 = new Player(false, false);
+let myTurn = true;
 
 const newPreview = () => {
   while (content.firstChild) {
@@ -30,10 +34,18 @@ const newPreview = () => {
   shipPreview.id = "shipPreview";
   myDisplay.appendChild(shipPreview);
 
-  let direction = document.createElement("button");
-  direction.id = "direction";
-  direction.innerHTML = "Axis";
-  direction.addEventListener("click", () => {
+  let instructions = document.createElement("p");
+  instructions.id = "instructions";
+  instructions.innerHTML =
+    "Place your ships on an available space. You can change the axis by clicking this button.";
+  shipPreview.appendChild(instructions);
+
+  let directionButton = document.createElement("button");
+  directionButton.id = "direction";
+  directionButton.innerHTML = "Axis";
+  let direction = "vertical";
+
+  directionButton.addEventListener("click", () => {
     if (direction == "vertical") {
       direction = "horizontal";
       previewBox.style.flexDirection = "row";
@@ -41,13 +53,13 @@ const newPreview = () => {
       direction = "vertical";
       previewBox.style.flexDirection = "column";
     }
+    return direction;
   });
   let previewBox = document.createElement("div");
   previewBox.id = "preview";
-  shipPreview.appendChild(direction);
+  shipPreview.appendChild(directionButton);
   shipPreview.appendChild(previewBox);
 };
-newPreview();
 
 const gameStart = () => {
   let shipPreview = document.getElementById("shipPreview");
@@ -64,23 +76,18 @@ const gameStart = () => {
   aiUI.appendChild(aiGrid);
 };
 
-const player1 = new Player(true, true);
-const ai1 = new Player(false, false);
-let myTurn = true;
-
 //change placement axis
-const axisButton = document.getElementById("direction");
-const previewBox = document.getElementById("preview");
-let direction = "vertical";
-axisButton.addEventListener("click", () => {
-  if (direction == "vertical") {
-    direction = "horizontal";
-    previewBox.style.flexDirection = "row";
-  } else if (direction == "horizontal") {
-    direction = "vertical";
-    previewBox.style.flexDirection = "column";
-  }
-});
+//const axisButton = document.getElementById("direction");
+//const previewBox = document.getElementById("preview");
+// axisButton.addEventListener("click", () => {
+//   if (direction == "vertical") {
+//     direction = "horizontal";
+//     previewBox.style.flexDirection = "row";
+//   } else if (direction == "horizontal") {
+//     direction = "vertical";
+//     previewBox.style.flexDirection = "column";
+//   }
+// });
 
 const aiPlace = () => {
   while (ai1.myShips.length < 5) {
@@ -201,6 +208,7 @@ const makeGrid = (size, parent, human) => {
 };
 
 const placeShip = () => {
+  let previewBox = document.getElementById("preview");
   for (let i = 0; i < myTiles.length; i++) {
     //place ship
     myTiles[i].addEventListener("click", () => {
@@ -320,7 +328,7 @@ const aiAttack = () => {
   }
 };
 
-const notification = (message) => {
+export const notification = (message) => {
   let shipPreview = document.getElementById("shipPreview");
   shipPreview.style.justifyContent = "center";
   let newMessage = document.createElement("p");
@@ -404,9 +412,31 @@ const checkWin = (player) => {
   }
 };
 
-makeGrid(10, myGrid, true);
-preview();
-placeShip();
+const loadTitle = () => {
+  let titleScreen = document.createElement("div");
+  titleScreen.id = "titleScreen";
+  content.appendChild(titleScreen);
+
+  let title = document.createElement("h1");
+  title.innerHTML = "BATTLESHIP";
+  titleScreen.appendChild(title);
+
+  let startButton = document.createElement("button");
+  startButton.innerHTML = "Start Game";
+  titleScreen.appendChild(startButton);
+  startButton.addEventListener("click", () => {
+    newPreview();
+    makeGrid(10, myGrid, true);
+    preview();
+    placeShip();
+  });
+};
+
+loadTitle();
+
+// makeGrid(10, myGrid, true);
+// preview();
+// placeShip();
 
 //FOR FUTURE VERSION
 //preview ship length

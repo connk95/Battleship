@@ -1,5 +1,6 @@
 import { Gameboard } from "./gameboard";
 import { Player } from "./player";
+import { notification } from ".";
 
 export class Ship {
   constructor(name, size) {
@@ -21,7 +22,8 @@ export class Ship {
   isSunk() {
     if (this.hits.length == this.size) {
       this.sunk = true;
-      alert(`You sunk my ${this.name}!`);
+      //alert(`You sunk my ${this.name}!`);
+      notification(`${this.name} was sunk!`);
     }
   }
 }

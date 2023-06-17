@@ -1,10 +1,18 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
 #content {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  align-items: center;
   height: 100%;
   width: 100%;
-  padding-top: 40px;
+  background-color: darkgrey;
 }
 
 .grid {
@@ -34,6 +42,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 40px;
   width: 100%;
 }
@@ -84,13 +93,11 @@
 #direction {
   width: 80px;
   height: 30px;
-  margin-bottom: 100px;
-  margin-top: 40px;
 }
 
 #myGrid,
 #aiGrid {
-  background-color: darkgrey;
+  background-color: rgb(100, 100, 100);
   border-radius: 20px;
 }
 
@@ -98,4 +105,37 @@ p {
   font-family: "Courier New", Courier, monospace;
   font-size: 24px;
   font-weight: bold;
+}
+
+h1 {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 100px;
+  font-weight: bold;
+  animation: fadeIn 5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#titleScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+
+button {
+  width: 100px;
+  height: 40px;
+}
+
+#instructions {
+  text-align: center;
+  font-size: 14px;
 }
