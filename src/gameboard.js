@@ -75,15 +75,12 @@ export class Gameboard {
           this.hits.push(attack);
           let thisAttack = this.ships[i].hit(attack);
           if (thisAttack == true) {
-            //alert("Hit!");
             return [x, y, true];
           }
-          //alert("Hit!");
           return [x, y];
         }
       }
     }
-    //alert("Miss!");
     return false;
   }
 }

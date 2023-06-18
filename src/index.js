@@ -1,13 +1,9 @@
 import { Player } from "./player";
+import { Gameboard } from "./gameboard";
 import "./style.css";
 
 const content = document.getElementById("content");
-//const myGrid = document.getElementById("myGrid");
 const myTiles = document.getElementsByClassName("myTile");
-//const aiGrid = document.getElementById("aiGrid");
-//aiGrid.style.visibility = "hidden";
-//const previewBox = document.getElementById("preview");
-//const shipPreview = document.getElementById("shipPreview");
 let direction = "vertical";
 const player1 = new Player(true, true);
 const ai1 = new Player(false, false);
@@ -43,7 +39,6 @@ const newPreview = () => {
   let directionButton = document.createElement("button");
   directionButton.id = "direction";
   directionButton.innerHTML = "Axis";
-  let direction = "vertical";
 
   directionButton.addEventListener("click", () => {
     if (direction == "vertical") {
@@ -75,19 +70,6 @@ const gameStart = () => {
   aiGrid.classList.add("grid");
   aiUI.appendChild(aiGrid);
 };
-
-//change placement axis
-//const axisButton = document.getElementById("direction");
-//const previewBox = document.getElementById("preview");
-// axisButton.addEventListener("click", () => {
-//   if (direction == "vertical") {
-//     direction = "horizontal";
-//     previewBox.style.flexDirection = "row";
-//   } else if (direction == "horizontal") {
-//     direction = "vertical";
-//     previewBox.style.flexDirection = "column";
-//   }
-// });
 
 const aiPlace = () => {
   while (ai1.myShips.length < 5) {
@@ -292,11 +274,9 @@ const placeShip = () => {
         preview();
       }
       if (player1.myShips.length == 5) {
-        //shipPreview.style.visibility = "hidden";
         gameStart();
         makeGrid(10, aiGrid, false);
         aiPlace();
-        //aiGrid.style.visibility = "visible";
         attackTile();
       }
     });
@@ -320,7 +300,7 @@ const aiAttack = () => {
         notification("We've taken a hit!");
       } else if (aiAttackTile[2] == false && x == myX && y == myY) {
         myTiles[i].classList.add("shot");
-        notification("The enemy has missed!");
+        notification("The enemy missed!");
       }
     }
     checkWin(player1);
@@ -354,11 +334,9 @@ const attackTile = () => {
         let marker = player1.shoot(x, y, ai1);
         if (marker == true) {
           aiTiles[i].classList.add("hit");
-          //typeWriter("Enemy hit!");
           notification("Enemy hit!");
         } else {
           aiTiles[i].classList.add("shot");
-          //typeWriter("You missed!");
           notification("Miss!");
         }
         myTurn = false;
@@ -372,21 +350,20 @@ const attackTile = () => {
 };
 
 const checkWin = (player) => {
-  let aiGrid = document.getElementById("aiGrid");
-  let myGrid = document.getElementById("myGrid");
+  let shipPreview = document.getElementById("shipPreview");
+  // let aiGrid = document.getElementById("aiGrid");
+  // let myGrid = document.getElementById("myGrid");
   if (player.myBoard.hits.length == 17) {
     if (player.isHuman == false) {
-      alert("You win!");
+      notification("You won!");
     } else if (player.isHuman == true) {
-      alert("You lose!");
+      notification("You lost!");
     }
-    while (myGrid.firstChild) {
-      aiGrid.removeChild(aiGrid.firstChild);
-      myGrid.removeChild(myGrid.firstChild);
-    }
-    let playAgain = confirm("Play again?");
-    if (playAgain) {
-      player1.turn = true;
+    let restartButton = document.createElement("button");
+    restartButton.innerHTML = "New Game";
+    shipPreview.appendChild(restartButton);
+    restartButton.addEventListener("click", () => {
+      myTurn = true;
       player1.myBoard = new Gameboard(10);
       player1.myShips = [];
       player1.shots = [];
@@ -398,15 +375,12 @@ const checkWin = (player) => {
       ai1.shots = [];
       ai1.myHits = [];
       ai1.shotSearch = [];
+      newPreview();
+      console.log("test");
       makeGrid(10, myGrid, true);
       preview();
       placeShip();
-      makeGrid(10, aiGrid, false);
-      shipPreview.style.visibility = "visible";
-    } else {
-      alert("Thank you for playing!");
-    }
-    return true;
+    });
   } else {
     return false;
   }
@@ -433,10 +407,6 @@ const loadTitle = () => {
 };
 
 loadTitle();
-
-// makeGrid(10, myGrid, true);
-// preview();
-// placeShip();
 
 //FOR FUTURE VERSION
 //preview ship length

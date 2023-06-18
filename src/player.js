@@ -124,7 +124,6 @@ export class Player {
       let y = Math.floor(Math.random() * player.myBoard.size);
       for (let i = 0; i < this.shots.length; i++) {
         if (x == this.shots[i][0] && y == this.shots[i][1]) {
-          // this.shotSearch = [];
           return this.aiShoot(player);
         }
       }
