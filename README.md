@@ -79,6 +79,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 - This project was created by Connor Ketcheson.
 
-Enjoy your shopping experience with the Shopping Cart project! If you have any questions or feedback, please don't hesitate to contact us.
+If you have any questions or feedback, please don't hesitate to contact us.
 
 ---
